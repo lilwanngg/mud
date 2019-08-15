@@ -1,0 +1,19 @@
+body * {
+    font-family: 'Livvic', sans-serif;
+    font-weight: 100;
+    user-select: none;
+}
+
+.title {
+    font-size: 148px;
+}
+
+.subtitle {
+    font-size: 30px;
+}
+
+.button {
+    font-size: 20px;
+    padding: 10px 20px;
+    outline: none;
+}

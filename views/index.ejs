@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Livvic:100,200,300&display=swap" rel="stylesheet">
+
+  <link rel='stylesheet' href='/stylesheets/home.css' />
+</head>
+
+<body>
+
+  <div style="display: table; height: 100%; width:100%; margin: 15em auto; overflow: hidden;">
+    <div style="display: table-cell; vertical-align: middle; text-align:center;">
+      <div class="title">müd</div>
+      <div class="subtitle">(pronounced mood)</div>
+      <br>
+      <button class="button" class="t3" onclick='loginPage()'>log in with spotify</button>
+    </div>
+  </div>
+
+
+  <script>
+    function loginPage() {
+      window.location.href = "/login"
+    }
+  </script>
+
+</body>
+
+</html>
