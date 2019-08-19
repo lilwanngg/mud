@@ -1,0 +1,74 @@
+.tooltip {	
+    position: absolute;										
+    padding: 8px;					
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 2px;			
+    pointer-events: none;	
+    z-index: 10;		
+    font-family: 'Livvic', sans-serif;
+    font-weight: 100;
+    font-size: 10px;
+}
+
+circle:hover {
+    border: 2px solid red;
+}
+
+.axis {
+    font-family: 'Livvic', sans-serif;
+    font-weight: 100;
+}
+
+body {
+    font-family: 'Livvic', sans-serif;
+    font-weight: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.content {
+    display: flex;
+    align-items: center;
+
+}
+
+
+li {
+    list-style: none;
+    padding: 5px 0px;
+    user-select: none;
+
+}
+
+.page-title {
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 20px;
+}
+
+.mud {
+    margin-left: 20px;
+    margin-bottom: 4px;
+    font-size: 50px;
+    font-weight: 700;
+}
+
+.rec-artist {
+    font-size: 12px;
+    font-weight: 200;
+}
+
+.rec-title {
+    font-size: 15px;
+    font-weight: 100;
+}
+
+ul {
+    font-size: 24px;
+    font-weight: 400;
+}
