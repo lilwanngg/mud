@@ -7,25 +7,91 @@
   </title>
 
   <link href="https://fonts.googleapis.com/css?family=Livvic:100,200,300&display=swap" rel="stylesheet">
-
+  <script src="//d3js.org/d3.v3.min.js"></script>
   <link rel='stylesheet' href='/stylesheets/home.css' />
 </head>
 
 <body>
 
-  <div style="display: table; height: 100%; width:100%; margin: 15em auto; overflow: hidden;">
-    <div style="display: table-cell; vertical-align: middle; text-align:center;">
-      <div class="title">müd</div>
-      <div class="subtitle">(pronounced mood)</div>
-      <br>
-      <button class="button" class="t3" onclick='loginPage()'>log in with spotify</button>
-    </div>
-  </div>
-
 
   <script>
     function loginPage() {
       window.location.href = "/login"
+    }
+
+    var width = Math.max(960, innerWidth),
+      height = Math.max(500, innerHeight);
+
+    var i = 0;
+
+    var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    svg.append("rect")
+      .attr("width", width)
+      .attr("height", height)
+      .on("ontouchstart" in document ? "touchmove" : "mousemove", particle);
+
+    svg.append("text")
+      .attr("transform",
+        "translate(" + (width / 2) + " ," +
+        (height/2) + ")")
+      .style("text-anchor", "middle")
+      .text("müd")
+      .classed("title", true)
+
+    svg.append("text")
+      .attr("transform",
+        "translate(" + (width / 2) + " ," +
+        (height / 2 + 40) + ")")
+      .style("text-anchor", "middle")
+      .text("(pronounced mood)")
+      .classed("subtitle", true)
+
+    svg.append("rect")
+      .attr("rx", 2)
+      .attr("ry", 2)
+      .attr('x', width/2-100)
+      .attr('y', height/2+90)
+      .attr("width", 200)
+      .attr("height", 58)
+      .attr('stroke', "slategray")
+      .classed("button-outline", true)
+      .on("click", loginPage)
+      .attr("fill", "#d8e1ed")
+
+
+    svg.append("g")
+      .attr("transform",
+        "translate(" + (width / 2 - 75) + " ," +
+        (height / 2 + 125) + ")")
+      .attr('stroke', "slategray")
+      .classed("button-outline", true)
+      .attr('font-weight', 100)
+      .on("click", loginPage)
+      .append("text")
+        .text("log in with spotify")
+        .classed("button", true)
+
+
+    function particle() {
+      var m = d3.mouse(this);
+
+      svg.insert("circle", "rect")
+        .attr("cx", m[0])
+        .attr("cy", m[1])
+        .attr("r", 1e-6)
+        .style("stroke", d3.hsl((i = (i + 1) % 140)+160, .5, .84))
+        .style("stroke-opacity", .7 )
+        .transition()
+        .duration(4000)
+        .ease(Math.sqrt)
+        .attr("r", 100)
+        .style("stroke-opacity", 1e-6)
+        .remove();
+
+      d3.event.preventDefault();
     }
   </script>
 

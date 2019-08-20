@@ -4,6 +4,12 @@ body * {
     user-select: none;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .title {
     font-size: 148px;
 }
@@ -15,5 +21,25 @@ body * {
 .button {
     font-size: 20px;
     padding: 10px 20px;
+    width: 200px;
+    cursor: pointer;
     outline: none;
+    font-weight: 100;
 }
+
+.button-outline {
+    fill: #e3edf97a;
+}
+
+rect {
+    fill:#e3edf91e;
+    pointer-events: all;
+    font-weight: 100;
+}
+
+
+circle {
+    fill: none;
+    stroke-width: 2.5px;
+}
+

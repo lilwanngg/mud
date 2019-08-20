@@ -27,6 +27,7 @@
           </li>
         <% }) %>
       </ul>
+
     </div>
 
 
@@ -35,17 +36,23 @@
 <script>
   const colors = [ "#FFA69E", "#FAF3DD", "#B8F2E6", "#AED9E0", "#7F899F", "#8FBC8F", "#D8BFD8" ]
   const strokes = ["#CD3434", "#E1C829", "#92C0B7", "#729172", "#336891", "#729172", "#9C829C"]
-  const tracks = <%- JSON.stringify(audio_features.medium) %>
+  const short_tracks = <%- JSON.stringify(audio_features.short) %>
+  const med_tracks = <%- JSON.stringify(audio_features.medium) %>
+  const long_tracks = <%- JSON.stringify(audio_features.long) %>
   const recommendations = <%- JSON.stringify(recommendations.medium) %>
 
-  const dataset = tracks.map((track,idx) => {
-    //d[0] = valence
-    //d[1] = energy
-    //d[2] = index
-    //d[3] = artist
-    //d[4] = title
-    return([ track.valence, track.energy, idx, track.artist, track.title])
-  })
+  function(tracks) {
+    let dataset
+    return dataset = tracks.map((track,idx) => {
+      return([ track.valence, track.energy, idx, track.artist, track.title])
+    })
+  }
+  //d[0] = valence
+  //d[1] = energy
+  //d[2] = index
+  //d[3] = artist
+  //d[4] = title
+    
 
   document.addEventListener("DOMContentLoaded", () => {
     const width = 700
