@@ -72,3 +72,26 @@ ul {
     font-size: 24px;
     font-weight: 400;
 }
+
+.choice-buttons {
+    display: flex;
+    flex-direction: column;
+    margin-right: 40px;
+    font-size: 18px;
+}
+
+.choice-buttons button {
+    font-size: 18px;
+    border-radius: 3px;
+    padding: 10px 15px;
+    margin: 3px;
+    outline: none;
+    cursor: pointer;
+    font-family: 'Livvic', sans-serif;
+    font-weight: 100;
+}
+
+.choices {
+    display: flex;
+    flex-direction: column;
+}

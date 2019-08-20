@@ -4,8 +4,8 @@ var fetch = require('node-fetch')
 
 var client_id = '583c0d1b7bd648bebe57b116c74af394';
 var client_secret = '00072bb35b20455382d8d92db10322f5';
-// var redirect_uri = 'http://localhost:8080/callback';
-var redirect_uri = "http://music-mud.herokuapp.com/callback"
+var redirect_uri = 'http://localhost:8080/callback';
+// var redirect_uri = "http://music-mud.herokuapp.com/callback"
 var stateKey = 'spotify_auth_state';
 
 

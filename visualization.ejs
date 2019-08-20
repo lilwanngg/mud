@@ -14,6 +14,25 @@
 <body>
     <div class="page-title">welcome to your music <div class="mud"> müd</div></div>
     <div class="content">
+      <div class="choice-buttons">
+        <script>
+            let short = "short", medium = "medium", long = "long"
+        </script>
+        time-period:
+        <button onclick="updateTime(short)">short</button>
+        <button onclick="updateTime(medium)">medium</button>
+        <button onclick="updateTime(long)">long</button>
+        <br/>
+        <br/>
+        <br/>
+        feature:
+        <div class="choices">
+          <button>energy</button>
+          <button>tempo</button>
+          <button>loudness</button>
+          <button>danceability</button>
+        </div>
+      </div>
       <div class="canvas">
         <circle></circle>
       </div>
@@ -34,25 +53,24 @@
 </body>
 
 <script>
+  //default to medium time (3 months)
+  let time = "medium"
+  let dataset
+
+  function updateTime(selection) {
+    time = selection
+  }
+  
+  if (time === "short") {
+    dataset = <%- JSON.stringify(audio_features.short) %>
+  } else if ( time === "medium" ) {
+    dataset = <%- JSON.stringify(audio_features.medium) %>
+  } else {
+    dataset = <%- JSON.stringify(audio_features.long) %>
+  }
+
   const colors = [ "#FFA69E", "#FAF3DD", "#B8F2E6", "#AED9E0", "#7F899F", "#8FBC8F", "#D8BFD8" ]
   const strokes = ["#CD3434", "#E1C829", "#92C0B7", "#729172", "#336891", "#729172", "#9C829C"]
-  const short_tracks = <%- JSON.stringify(audio_features.short) %>
-  const med_tracks = <%- JSON.stringify(audio_features.medium) %>
-  const long_tracks = <%- JSON.stringify(audio_features.long) %>
-  const recommendations = <%- JSON.stringify(recommendations.medium) %>
-
-  function(tracks) {
-    let dataset
-    return dataset = tracks.map((track,idx) => {
-      return([ track.valence, track.energy, idx, track.artist, track.title])
-    })
-  }
-  //d[0] = valence
-  //d[1] = energy
-  //d[2] = index
-  //d[3] = artist
-  //d[4] = title
-    
 
   document.addEventListener("DOMContentLoaded", () => {
     const width = 700
@@ -126,20 +144,20 @@
        .enter()
        .append("circle")
        .attr('cx', function(d) {
-        return (d[0]*(width-70)+60)
+        return (d.valence*(width-70)+60)
        })
        .attr('cy', function(d) {
-        return (height-50)-d[1]*(height-100)
+        return (height-50)-d.energy*(height-100)
        })
        .attr('r', function(d) {
-        return Math.sqrt((50-d[2])*15)
+        return Math.sqrt((50-d.idx)*15)
        })
        .style("opacity", 0.6)
        .attr('stroke', function(d) {
-         return strokes[d[2]%7]
+         return strokes[d.idx%7]
        })
        .attr('fill', function(d) {
-         return colors[d[2]%7]
+         return colors[d.idx%7]
        })
        .on("mouseover", function (d) {
         d3.select(this)
@@ -147,7 +165,7 @@
         div.transition()
           .duration(200)
           .style("opacity", .9);
-        div.html("Rank: " + (d[2]+1) + "<br/>" + `"${d[4]}"` + "<br/>" + d[3])
+        div.html("Rank: " + (d.idx+1) + "<br/>" + `"${d.title}"` + "<br/>" + d.artist)
           .style("left", (d3.event.pageX + 20) + "px")
           .style("top", (d3.event.pageY - 28) + "px");
         })

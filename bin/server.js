@@ -9,17 +9,6 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('listening', onListening);
 
-// function normalizePort(val) {
-//   var port = parseInt(val, 10);
-//   if (isNaN(port)) {
-//     return val;
-//   }
-//   if (port >= 0) {
-//     return port;
-//   }
-//   return false;
-// }
-
 
 function onListening() {
   var addr = server.address();
