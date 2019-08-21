@@ -19,7 +19,6 @@ router.get('/callback', function(req, res) {
 
 router.get('/yourmud', function(req, res, next) {
     const { audio_features, recommendations } = req.session
-    console.log(audio_features)
     res.render('visualization', {
         audio_features: audio_features, 
         recommendations: recommendations

@@ -16,150 +16,198 @@
     <div class="content">
       <div class="choice-buttons">
         <script>
-            let short = "short", medium = "medium", long = "long"
+          let short = <%- JSON.stringify(audio_features.short) %>
+          let medium = <%- JSON.stringify(audio_features.medium) %>
+          let long = <%- JSON.stringify(audio_features.long) %>
+          let short_recs = <%- JSON.stringify(recommendations.short) %>
+          let med_recs = <%- JSON.stringify(recommendations.medium) %>
+          let long_recs = <%- JSON.stringify(recommendations.long) %>
+          let energy = "energy" , tempo = "tempo", loudness = "loudness", danceability = "danceability"
+          let current_selection = medium
+          let current_feature = energy
+          let printable_recs
+
+          printable_recs = med_recs.map(rec => {
+            return ("<li class='rec'>" + "<div class='rec-title'>" + rec[1] + "</div>" + "<div class='rec-artist'>" + rec[0] + "</div> " + "</li >")
+          })
         </script>
         time-period:
-        <button onclick="updateTime(short)">short</button>
-        <button onclick="updateTime(medium)">medium</button>
-        <button onclick="updateTime(long)">long</button>
+        <button onclick="updateSelection(short, current_feature, 'button1', short_recs)" class="buttons" id="button1">short</button>
+        <button onclick="updateSelection(medium, current_feature, 'button2', med_recs)" class="buttons selected"  id="button2">medium</button>
+        <button onclick="updateSelection(long, current_feature, 'button3', long_recs)" class="buttons"  id="button3">long</button>
         <br/>
         <br/>
         <br/>
         feature:
         <div class="choices">
-          <button>energy</button>
-          <button>tempo</button>
-          <button>loudness</button>
-          <button>danceability</button>
+          <button onclick="updateSelection(current_selection, energy, 'button4')" class="buttons selected" id="button4">energy</button>
+          <button onclick="updateSelection(current_selection, danceability, 'button7')" class="buttons" id="button7">danceability</button>
+          <button onclick="updateSelection(current_selection, tempo, 'button5')" class="buttons" id="button5">tempo</button>
+          <button onclick="updateSelection(current_selection, loudness, 'button6')" class="buttons" id="button6">loudness</button>
         </div>
       </div>
       <div class="canvas">
         <circle></circle>
       </div>
-      <ul id="recommendations-area"> recommendations
-    
-        <% const recs = recommendations.medium %>
-        <% recs.forEach( rec => { %>
-          <li class="rec">
-            <div class="rec-title"><%= rec[1] %></div>
-            <div class="rec-artist"><%= rec[0] %></div>
-          </li>
-        <% }) %>
+      <ul id="recommendations-area">
       </ul>
-
     </div>
-
-
 </body>
 
 <script>
-  //default to medium time (3 months)
-  let time = "medium"
-  let dataset
-
-  function updateTime(selection) {
-    time = selection
+  console.log(printable_recs)
+  document.getElementById("recommendations-area").innerHTML = "recommendations" + printable_recs.join(" ")
+  const buttons = document.getElementsByClassName("buttons")
+  for ( let i = 0; i < buttons.length; i++ ) {
+    buttons[i].addEventListener('click', function() {
+      if (buttons[i].classList.contains('selected')) {
+        buttons[i].classList.remove('selected')
+      } else {
+        buttons[i].classList.add('selected')
+      }
+    })
   }
   
-  if (time === "short") {
-    dataset = <%- JSON.stringify(audio_features.short) %>
-  } else if ( time === "medium" ) {
-    dataset = <%- JSON.stringify(audio_features.medium) %>
-  } else {
-    dataset = <%- JSON.stringify(audio_features.long) %>
+  function updateSelection(selection, song_feature, button, new_recs) {
+    let length, i
+    if (button === "button1" || button === "button2" || button === "button3") {
+      length = 3
+      i = 0
+    } else {
+      length = 7
+      i = 3
+    }
+    for (i; i < length; i++) {
+      if (buttons[i].classList.contains('selected')) {
+        buttons[i].classList.remove('selected')
+      }
+    }
+    if (new_recs) {
+      printable_recs = new_recs.map(rec => {
+        return ("<li class='rec'>" + "<div class='rec-title'>" + rec[1] + "</div>" + "<div class='rec-artist'>" + rec[0] + "</div> " + "</li >")
+      })
+    }
+    document.getElementById("recommendations-area").innerHTML = "recommendations" + printable_recs.join(" ")
+    current_selection = selection
+    current_feature = song_feature
+    update(selection, song_feature)
   }
+
 
   const colors = [ "#FFA69E", "#FAF3DD", "#B8F2E6", "#AED9E0", "#7F899F", "#8FBC8F", "#D8BFD8" ]
   const strokes = ["#CD3434", "#E1C829", "#92C0B7", "#729172", "#336891", "#729172", "#9C829C"]
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const width = 700
-    const height = 600
-    const padding = 50
+  const width = 700
+  const height = 600
+  const padding = 50
 
-    const canvas = d3.select(".canvas")
+  const canvas = d3.select(".canvas")
 
-    const svg = canvas.append("svg")
-      .attr('width', width)
-      .attr('height', height)
-      .attr('padding', 50)
+  const svg = canvas.append("svg")
+    .attr('width', width)
+    .attr('height', height)
+    .attr('padding', 50)
 
-    const x = d3.scaleLinear().domain([0, 1.0]).range([50, width-50])
-    const y = d3.scaleLinear().domain([0, 1]).range([height-50, 50])
-    const xAxis = d3.axisBottom(x).ticks(10)
-    const yAxis = d3.axisLeft(y).ticks(10)
+  const x = d3.scaleLinear().domain([0, 1]).range([50, width-50])
+  const y = d3.scaleLinear().domain([0, 1]).range([height-50, 50])
+  const xAxis = d3.axisBottom(x).ticks(10)
+  const yAxis = d3.axisLeft(y).ticks(10)
 
-    var div = d3.select("body").append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
+  var div = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
-    svg.append('g')
-       .attr("class", "axis axis-x")
-       .attr("transform", "translate(10," + (height - 50) + ")")
-       .call(xAxis)
-       .selectAll("text")
-          .style("text-anchor", "end")
-          .attr("dx", ".6em")
+  svg.append('g')
+    .attr("class", "axis axis-x")
+    .attr("transform", "translate(10," + (height - 50) + ")")
+    .call(xAxis)
+    .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", ".6em")
 
-    svg.append('g')
-       .attr("class", "axis axis-y")
-       .attr("transform", "translate(60,0)")
-       .call(yAxis);
+  svg.append('g')
+    .attr("class", "axis axis-y")
+    .attr("transform", "translate(60,0)")
+    .call(yAxis);
 
+  svg.append("text")
+    .attr("transform",
+      "translate(" + (width / 2) + " ," +
+      (height) + ")")
+    .attr("dx", "0.5em")
+    .style("text-anchor", "middle")
+    .text("valence");
+
+  svg.append("text")
+    .attr("transform",
+      "translate(" + (width-100) + " ," +
+      (height-18) + ")")
+    .style("text-anchor", "middle")
+    .text("happy, cheerful, euphoric --> ")
+    .attr("font-size", "12px")
+
+  svg.append("text")
+    .attr("transform",
+      "translate(" + (120) + " ," +
+      (height-18) + ")")
+    .style("text-anchor", "middle")
+    .text("<-- sad, depressed, angry")
+    .attr("font-size", "12px")
+    
+  svg.append("text")
+    .attr("class", "y-axis-text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("energy");
+
+  function update(data, feature) {
+    let featureTitle
+    let domain
+    if (feature === "energy") {
+      featureTitle = "energy"
+      domain = [0, 1.0]
+    } else if (feature === "danceability") {
+      featureTitle = "danceability"
+      domain = [0, 1.0]
+    } else if (feature === "tempo") {
+      featureTitle = "tempo (beats per min)"
+      domain = [0, d3.max(data, function(d) {
+        return d.tempo
+      })]
+    } else if (feature = "loudness") {
+      featureTitle = "loudness (in dB)"
+      domain = [-60, 0]
+    }
+    let new_y = d3.scaleLinear().domain(domain).range([height - 50, 50])
+    let new_yAxis = d3.axisLeft(new_y).ticks(10)
+
+    svg.select(".axis-y")
+      .transition()
+      .duration(1000)
+      .call(new_yAxis)
+
+    let yAxisText = svg.selectAll(".y-axis-text")
+    yAxisText.remove()
+    
     svg.append("text")
-      .attr("transform",
-        "translate(" + (width / 2) + " ," +
-        (height) + ")")
-      .attr("dx", "0.5em")
-      .style("text-anchor", "middle")
-      .text("valence");
-
-    svg.append("text")
-      .attr("transform",
-        "translate(" + (width-100) + " ," +
-        (height-18) + ")")
-      .style("text-anchor", "middle")
-      .text("happy, cheerful, euphoric --> ")
-      .attr("font-size", "11px")
-
-    svg.append("text")
-      .attr("transform",
-        "translate(" + (120) + " ," +
-        (height-18) + ")")
-      .style("text-anchor", "middle")
-      .text("<-- sad, depressed, angry")
-      .attr("font-size", "11px")
-
-    svg.append("text")
+      .attr("class", "y-axis-text")
       .attr("transform", "rotate(-90)")
       .attr("y", 0)
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("energy");
-
-
-    svg.selectAll("circle")
-       .data(dataset)
-       .enter()
-       .append("circle")
-       .attr('cx', function(d) {
-        return (d.valence*(width-70)+60)
-       })
-       .attr('cy', function(d) {
-        return (height-50)-d.energy*(height-100)
-       })
-       .attr('r', function(d) {
-        return Math.sqrt((50-d.idx)*15)
-       })
-       .style("opacity", 0.6)
-       .attr('stroke', function(d) {
-         return strokes[d.idx%7]
-       })
-       .attr('fill', function(d) {
-         return colors[d.idx%7]
-       })
-       .on("mouseover", function (d) {
+      .text(featureTitle)
+      
+    let u = svg.selectAll("circle")
+      .data(data)
+    u
+      .enter()
+      .append("circle")
+      .merge(u)
+      .on("mouseover", function (d) {
         d3.select(this)
           .style("opacity", 1)
         div.transition()
@@ -175,11 +223,28 @@
           div.transition()
             .duration(500)
             .style("opacity", 0);
-        });
-  })
+        })
+      .transition()
+      .duration(1000)
+      .attr('cx', function(d) {
+        return (d.valence*(width-70)+60)
+      })
+      .attr('cy', function(d) {
+        return new_y(d[feature])
+      })
+      .attr('r', function(d) {
+        return Math.sqrt((50-d.idx)*15)
+      })
+      .style("opacity", 0.6)
+      .attr('stroke', function(d) {
+        return strokes[d.idx%7]
+      })
+      .attr('fill', function(d) {
+        return colors[d.idx%7]
+      })   
+  }
 
-
-
+  update(current_selection, current_feature)
   
 </script>
 
