@@ -44,13 +44,20 @@
         </div>
       </div>
       <div class="modal-background modal3" onclick="closeModal()">
-          <div class="modal-child recommendations">
-          <h2>recommendations</h2>
-          Recommendations based on your <strong class="emphasis">personal top-listened</strong> to tracks.
+        <div class="modal-child chart">
+          <div class="exit-modal">X</div>
+          <h2>songs</h2>
+          <p>Each bubble is one of your <strong class="emphasis">top 50 played songs</strong> for the time period, where
+            larger bubbles indicate a higher ranking.</p>
+          <br />
+          <h4 class="subtitle">how to read your data</h4>
+          <li><strong class="emphasis">Hover over any bubble</strong> to see the song rank, title, and artist.</li>
+          <li>The x axis is emotional valence, since human reaction to music is also emotional. This is an estimated
+            measurement
+            of <strong class="emphasis">whether the song will make you feel happy or sad.</strong></li>
         </div>
       </div>
     <div class="modal-background modal4" onclick="closeModal()">
-
         <div class="modal-child chart">
           <div class="exit-modal">X</div>
           <h2>songs</h2>
@@ -100,7 +107,6 @@
           <button onclick="updateSelection(current_selection, energy, 'button4')" class="buttons selected" id="button4">energy</button>
           <button onclick="updateSelection(current_selection, danceability, 'button7')" class="buttons" id="button7">danceability</button>
           <button onclick="updateSelection(current_selection, tempo, 'button5')" class="buttons" id="button5">tempo</button>
-          <!-- <button onclick="updateSelection(current_selection, loudness, 'button6')" class="buttons" id="button6">loudness</button> -->
         </div>
       </div>
       <div class="canvas">
