@@ -8,10 +8,67 @@
     
   </title>
   <link rel='stylesheet' href='/stylesheets/visualization.css' />
+  <link rel='stylesheet' href='/stylesheets/info-modal.css' />
 </head>
 
 
 <body>
+  
+  <div class="modal-background modal1" onclick="closeModal()">
+      <div class="modal-child time-period">
+        <div class="exit-modal">X</div>
+
+        <h2>time period</h2>
+        Data is pulled as the top 50 tracks played within the following periods:
+        <h4 class="subtitle">short</h4>
+        <li>approximately the last 4 weeks</li>
+        <h4 class="subtitle">medium</h4>
+        <li>approximately the last 6 months</li>
+        <h4 class="subtitle">long</h4>
+        <li>calculated from data over several years, including recent streaming data as it becomes available</li>
+      </div>
+    </div>
+    <div class="modal-background modal2" onclick="closeModal()">
+
+        <div class="modal-child feature-select">
+              <div class="exit-modal">X</div>
+
+          <h2>feature select</h2>
+          <p>Each song has its own rating of energy (0-1), danceability (0-1), and tempo (beats per minute)</p>
+          <h4 class="subtitle">energy</h4>
+          <li>a <strong class="emphasis">perceptual measure of intensity, dynamic range, and general entropy.</strong> Ratings closer to 1 indicate fast, loud, and noisy tracks.</li>
+          <h4 class="subtitle">danceability</h4>
+          <li>describes <strong class="emphasis">how suitable a track is for dancing</strong> based on features such as rhythm, beat strength, regularity, and tempo.</li>
+          <h4 class="subtitle">tempo</h4>
+          <li>overall estimated tempo of a track, which indicates the <strong class="emphasis">speed or pace of a track.</strong></li>
+        </div>
+      </div>
+      <div class="modal-background modal3" onclick="closeModal()">
+          <div class="modal-child recommendations">
+          <h2>recommendations</h2>
+          Recommendations based on your <strong class="emphasis">personal top-listened</strong> to tracks.
+        </div>
+      </div>
+    <div class="modal-background modal4" onclick="closeModal()">
+
+        <div class="modal-child chart">
+          <div class="exit-modal">X</div>
+          <h2>songs</h2>
+        <p>Each bubble is one of your <strong class="emphasis">top 50 played songs</strong> for the time period, where larger bubbles indicate a higher ranking.</p>
+        <br/>
+        <h4 class="subtitle">how to read your data</h4>
+        <li><strong class="emphasis">Hover over any bubble</strong> to see the song rank, title, and artist.</li>
+        <li>The x axis is emotional valence, since human reaction to music is also emotional. This is an estimated measurement
+          of <strong class="emphasis">whether the song will make you feel happy or sad.</strong></li>
+      </div>
+    </div>
+    <div class="modal-background modal0 show-modal" onclick="closeModal()">
+      <div class="modal-child welcome" id="welcome-modal" onclick="preventDefault()">
+        <div class="exit-modal">X</div>
+        <h1>your music müd</h1>
+        <p>click any gray question marks to find out more about this visualization!</p>
+      </div>
+    </div>
     <div class="page-title">welcome to your music <div class="mud"> müd</div></div>
     <div class="content">
       <div class="choice-buttons">
@@ -26,24 +83,24 @@
           let current_selection = medium
           let current_feature = energy
           let printable_recs
-
+          
           printable_recs = med_recs.map(rec => {
             return ("<li class='rec'>" + "<div class='rec-title'>" + rec[1] + "</div>" + "<div class='rec-artist'>" + rec[0] + "</div> " + "</li >")
           })
         </script>
-        time-period:
+        <div class="titles">time-period: <div class="question-btn modal1">?</div></div>
         <button onclick="updateSelection(short, current_feature, 'button1', short_recs)" class="buttons" id="button1">short</button>
         <button onclick="updateSelection(medium, current_feature, 'button2', med_recs)" class="buttons selected" id="button2">medium</button>
         <button onclick="updateSelection(long, current_feature, 'button3', long_recs)" class="buttons"  id="button3">long</button>
         <br/>
         <br/>
         <br/>
-        feature:
-        <div class="choices">
+        <div class="titles">feature: <div class="question-btn modal2">?</div></div>
+        <div class="choices"> 
           <button onclick="updateSelection(current_selection, energy, 'button4')" class="buttons selected" id="button4">energy</button>
           <button onclick="updateSelection(current_selection, danceability, 'button7')" class="buttons" id="button7">danceability</button>
           <button onclick="updateSelection(current_selection, tempo, 'button5')" class="buttons" id="button5">tempo</button>
-          <button onclick="updateSelection(current_selection, loudness, 'button6')" class="buttons" id="button6">loudness</button>
+          <!-- <button onclick="updateSelection(current_selection, loudness, 'button6')" class="buttons" id="button6">loudness</button> -->
         </div>
       </div>
       <div class="canvas">
@@ -55,7 +112,8 @@
 </body>
 
 <script>
-  document.getElementById("recommendations-area").innerHTML = "recommendations" + printable_recs.join(" ")
+
+  document.getElementById("recommendations-area").innerHTML = "<div class='titles'>recommendations </div>" + printable_recs.join(" ")
   const buttons = document.getElementsByClassName("buttons")
   for ( let i = 0; i < buttons.length; i++ ) {
     buttons[i].addEventListener('click', function() {
@@ -73,7 +131,7 @@
       length = 3
       i = 0
     } else {
-      length = 7
+      length = 6
       i = 3
     }
     for (i; i < length; i++) {
@@ -92,9 +150,13 @@
     update(selection, song_feature)
   }
 
-
+  const features = { "short": { "energy": 0, "danceability": 1, "tempo": 2 }, 
+                     "medium": { "energy": 0, "danceability": 1, "tempo": 2 },
+                     "long": { "energy": 0, "danceability": 1, "tempo": 2 } } 
   const colors = [ "#FFA69E", "#FAF3DD", "#B8F2E6", "#AED9E0", "#7F899F", "#8FBC8F", "#D8BFD8" ]
   const strokes = ["#CD3434", "#E1C829", "#92C0B7", "#729172", "#336891", "#729172", "#9C829C"]
+  const shorts = <%- JSON.stringify(clusters.short) %>
+  console.log(shorts)
 
   const width = 700
   const height = 600
@@ -128,6 +190,26 @@
     .attr("class", "axis axis-y")
     .attr("transform", "translate(60,0)")
     .call(yAxis);
+
+  var question = svg.append('g')
+    .attr("transform", "translate(80,80)")
+  question.append('rect')
+    .attr("class", "question-btn modal4")
+    .attr("fill", "rgb(210,210,210)")
+    .attr('x', 0)
+    .attr('y', -20)
+    .attr('rx', "50%")
+    .attr('ry', "50%")
+    .attr('r', 15)
+
+
+  question.append('text')
+    .attr('class', "question-btn")
+    .attr('x', 7)
+    .attr('y', -3)
+    .attr("font-size", 18)
+    .text("?")
+    .attr('fill', 'white')
 
   svg.append("text")
     .attr("transform",
@@ -176,10 +258,11 @@
       domain = [0, d3.max(data, function(d) {
         return d.tempo
       })]
-    } else if (feature = "loudness") {
-      featureTitle = "loudness (in dB)"
-      domain = [-60, 0]
     }
+    // } else if (feature = "loudness") {
+    //   featureTitle = "loudness (in dB)"
+    //   domain = [-20, 0]
+    // }
     let new_y = d3.scaleLinear().domain(domain).range([height - 50, 50])
     let new_yAxis = d3.axisLeft(new_y).ticks(10)
 
@@ -244,6 +327,34 @@
   }
 
   update(current_selection, current_feature)
+
+  const btns = document.getElementsByClassName("question-btn")
+
+  const modals = document.getElementsByClassName("modal-background")
+  const temp = modals[3]
+  modals[2] = temp
+  console.log(modals)
+  for( let i = 0; i < btns.length; i ++) {
+    btns[i].addEventListener('click', function () {
+      if (modals[i].classList.contains('show-modal')) {
+        console.log("removed")
+        modals[i].classList.remove('show-modal')
+      } else {
+        console.log("added")
+        modals[i].classList.add('show-modal')
+      }
+    })
+  }
+  
+  function closeModal() {
+    console.log(modals)
+    for (let i = 0; i < modals.length; i++) {
+      if (modals[i].classList.contains('show-modal')) {
+        console.log("removed")
+        modals[i].classList.remove('show-modal')
+      }
+    }
+  }
   
 </script>
 

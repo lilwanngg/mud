@@ -1,11 +1,12 @@
 var SpotifyWebApi = require('spotify-web-api-node');
 var querystring = require('querystring');
-var fetch = require('node-fetch')
+var fetch = require('node-fetch');
+var clusterMaker = require('clusters')
 
 var client_id = '583c0d1b7bd648bebe57b116c74af394';
 var client_secret = '00072bb35b20455382d8d92db10322f5';
-// var redirect_uri = 'http://localhost:8080/callback';
-var redirect_uri = "http://music-mud.herokuapp.com/callback"
+var redirect_uri = 'http://localhost:8080/callback';
+// var redirect_uri = "http://music-mud.herokuapp.com/callback"
 var stateKey = 'spotify_auth_state';
 
 
@@ -209,7 +210,7 @@ module.exports.spotifyAuth = function (req, res) {
                         "energy": track.energy,
                         "key": track.key,
                         //loudness in decibels, between -60 and 0db
-                        "loudness": track.loudness,
+                        // "loudness": track.loudness,
                         "mode": track.mode,
                         //0-1, 0.5-1 being instrumentals w/ increasing confidence
                         "instrumentalness": track.instrumentalness,
@@ -235,6 +236,36 @@ module.exports.spotifyAuth = function (req, res) {
                 req.session.audio_features.long = audio_features_long
                 req.session.info.long = info_long
                 req.session.recommendations.long = recommendations_long
+                req.session.clusters = { short: [], medium: [], long: [] }
+
+                clusterMaker.k(5)
+                clusterMaker.iterations(1000)
+                let lengths = ["short", "medium", "long"]
+                let results, centroid
+                let cD1 = [] 
+                let cD2 = [] 
+                let cD3 = [] 
+                // let cD4 = []
+                let qty = 0
+                lengths.forEach( length => {
+                    req.session.audio_features[length].forEach( track => {
+                        cD1.push([track.valence, track.energy])
+                        cD2.push([track.valence, track.danceability])
+                        cD3.push([track.valence, track.tempo])
+                        // cD4.push([track.valence, track.loudness])
+                    });
+                    [cD1, cD2, cD3].forEach( cD => {
+                        clusterMaker.data(cD);
+                        results = clusterMaker.clusters();
+                        results.forEach( clust => {
+                            if (clust.points.length > qty) { 
+                                centroid = clust.centroid
+                            }
+                        });
+                        req.session.clusters[length].push(centroid)
+                        qty = 0
+                    });
+                });
                 res.redirect('/yourmud')
             })
     })

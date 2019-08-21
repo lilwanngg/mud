@@ -1,0 +1,136 @@
+.modal-background {
+    display: none !important;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.modal-background div {
+    text-align: right;
+    font-weight: 200;
+    font-size: 15px;
+}
+
+.modal-background div h2 {
+    text-align: right;
+}
+
+.modal-child {
+    position: absolute;
+    background-color: white;
+    height: 280px;
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 30px 30px 30px;
+    border-radius: 5px;
+    line-height: 17px;
+    box-shadow: 0px 0px 3px 1px rgba(213, 207, 207, 0.776);
+    user-select: none;
+}
+
+
+.feature-select {
+    width: 430px;
+    height: 350px;
+}
+
+.chart {
+    height: 270px;
+}
+
+h4 {
+    margin: 20px 0px 0px 0px;
+}
+
+.recommendations {
+    height: 200px;
+}
+
+.emphasis {
+    color: rgb(139, 139, 235);
+    font-weight: 300;
+}
+
+.time-period {
+    height: 320px;
+}
+
+.subtitle {
+    font-size: 17px;
+    color: rgb(96, 96, 168);
+    text-align: right;
+
+}
+
+.modal-child li {
+    border-left: 2px solid rgb(139, 139, 235);
+    padding-left: 5px;
+    user-select: none;
+}
+
+.titles {
+    display: flex;
+}
+
+.question-btn {
+    margin-left: 10px;
+    margin-bottom: 3px;
+    font-weight: 400;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+    user-select: none;
+    background-color: rgb(210, 210, 210);
+}
+
+.modal4 {
+    margin-top: 5px;
+    font-size: 19px;
+}
+
+.show-modal {
+    display: block !important;
+}
+
+.modal0 .modal-child {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.modal0 .modal-child p {
+    font-size: 20px;
+    line-height: 25px;
+}
+
+.modal-child .exit-modal {
+    cursor: pointer;
+    display: flex;
+    align-items: left;
+    user-select:none;
+    position: relative;
+    font-family: sans-serif;
+    font-size: 20px;
+    position: relative;
+    top: 20px;
+    font-weight: 800;
+    color: gray;
+
+}
+
+.welcome .exit-modal {
+    position: relative;
+    top: -50px;
+    font-size: 20px;
+}
+
+
