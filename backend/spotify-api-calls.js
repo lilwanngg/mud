@@ -117,9 +117,6 @@ module.exports.spotifyAuth = function (req, res) {
                 data.body.tracks.forEach(track => {
                     recommendations_medium.push([track.artists[0].name, track.name])
                 })
-                // req.session.audio_features.medium_term = audio_features_medium
-                // req.session.info.medium_term = info_medium
-                // req.session.recommendations.medium_term = recommendations_medium
             })
     }).then(function (data) {
         spotifyApi
@@ -171,10 +168,6 @@ module.exports.spotifyAuth = function (req, res) {
                 data.body.tracks.forEach( track => {
                     recommendations_short.push([ track.artists[0].name, track.name ])
                 })
-                // recommendations_short = data.body
-                // req.session.audio_features.short_term = audio_features_short
-                // req.session.info.short_term = info_short
-                // req.session.recommendations.short_term = data.body
             })
     }).then(function (data) {
         spotifyApi
