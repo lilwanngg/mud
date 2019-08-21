@@ -33,7 +33,7 @@
         </script>
         time-period:
         <button onclick="updateSelection(short, current_feature, 'button1', short_recs)" class="buttons" id="button1">short</button>
-        <button onclick="updateSelection(medium, current_feature, 'button2', med_recs)" class="buttons selected"  id="button2">medium</button>
+        <button onclick="updateSelection(medium, current_feature, 'button2', med_recs)" class="buttons selected" id="button2">medium</button>
         <button onclick="updateSelection(long, current_feature, 'button3', long_recs)" class="buttons"  id="button3">long</button>
         <br/>
         <br/>
@@ -55,7 +55,6 @@
 </body>
 
 <script>
-  console.log(printable_recs)
   document.getElementById("recommendations-area").innerHTML = "recommendations" + printable_recs.join(" ")
   const buttons = document.getElementsByClassName("buttons")
   for ( let i = 0; i < buttons.length; i++ ) {
@@ -86,8 +85,8 @@
       printable_recs = new_recs.map(rec => {
         return ("<li class='rec'>" + "<div class='rec-title'>" + rec[1] + "</div>" + "<div class='rec-artist'>" + rec[0] + "</div> " + "</li >")
       })
+      document.getElementById("recommendations-area").innerHTML = "recommendations" + printable_recs.join(" ")
     }
-    document.getElementById("recommendations-area").innerHTML = "recommendations" + printable_recs.join(" ")
     current_selection = selection
     current_feature = song_feature
     update(selection, song_feature)
