@@ -29,10 +29,8 @@
       </div>
     </div>
     <div class="modal-background modal2" onclick="closeModal()">
-
         <div class="modal-child feature-select">
-              <div class="exit-modal">X</div>
-
+          <div class="exit-modal">X</div>
           <h2>feature select</h2>
           <p>Each song has its own rating of energy (0-1), danceability (0-1), and tempo (beats per minute)</p>
           <h4 class="subtitle">energy</h4>
@@ -67,13 +65,15 @@
         <li><strong class="emphasis">Hover over any bubble</strong> to see the song rank, title, and artist.</li>
         <li>The x axis is emotional valence, since human reaction to music is also emotional. This is an estimated measurement
           of <strong class="emphasis">whether the song will make you feel happy or sad.</strong></li>
+        <li>The large gray circle is a measure of the <strong class="emphasis"> strongest cluster of points </strong>within this combination of features so that you can see a general trend in your listening</li>
       </div>
     </div>
     <div class="modal-background modal0 show-modal" onclick="closeModal()">
       <div class="modal-child welcome" id="welcome-modal">
         <div class="exit-modal">X</div>
         <h1>your music müd</h1>
-        <p><strong class="emphasis">click any gray question marks</strong> to find out more about this visualization!</p>
+        <p><strong class="emphasis">click any gray question marks</strong> to find out more about this visualization</p>
+        <p>or <strong class="emphasis">hover over any circles</strong> to see your songs!</p>
       </div>
     </div>
     <div class="page-title">welcome to your music <div class="mud"> müd</div></div>
@@ -151,18 +151,14 @@
       })
       document.getElementById("recommendations-area").innerHTML = "recommendations" + printable_recs.join(" ")
     }
+
     current_selection = selection
     current_feature = song_feature
     update(selection, song_feature)
   }
 
-  const features = { "short": { "energy": 0, "danceability": 1, "tempo": 2 }, 
-                     "medium": { "energy": 0, "danceability": 1, "tempo": 2 },
-                     "long": { "energy": 0, "danceability": 1, "tempo": 2 } } 
   const colors = [ "#FFA69E", "#FAF3DD", "#B8F2E6", "#AED9E0", "#7F899F", "#8FBC8F", "#D8BFD8" ]
   const strokes = ["#CD3434", "#E1C829", "#92C0B7", "#729172", "#336891", "#729172", "#9C829C"]
-  const shorts = <%- JSON.stringify(clusters.short) %>
-  console.log(shorts)
 
   const width = 700
   const height = 600
@@ -265,10 +261,6 @@
         return d.tempo
       })]
     }
-    // } else if (feature = "loudness") {
-    //   featureTitle = "loudness (in dB)"
-    //   domain = [-20, 0]
-    // }
     let new_y = d3.scaleLinear().domain(domain).range([height - 50, 50])
     let new_yAxis = d3.axisLeft(new_y).ticks(10)
 
@@ -339,24 +331,19 @@
   const modals = document.getElementsByClassName("modal-background")
   const temp = modals[3]
   modals[2] = temp
-  console.log(modals)
   for( let i = 0; i < btns.length; i ++) {
     btns[i].addEventListener('click', function () {
       if (modals[i].classList.contains('show-modal')) {
-        console.log("removed")
         modals[i].classList.remove('show-modal')
       } else {
-        console.log("added")
         modals[i].classList.add('show-modal')
       }
     })
   }
   
   function closeModal() {
-    console.log(modals)
     for (let i = 0; i < modals.length; i++) {
       if (modals[i].classList.contains('show-modal')) {
-        console.log("removed")
         modals[i].classList.remove('show-modal')
       }
     }

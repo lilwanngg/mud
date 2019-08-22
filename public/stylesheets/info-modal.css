@@ -41,7 +41,7 @@
 }
 
 .chart {
-    height: 270px;
+    height: 320px;
 }
 
 h4 {
@@ -118,10 +118,11 @@ h4 {
     align-items: left;
     user-select:none;
     position: relative;
+    right: 10px;
+    bottom: -20px;
     font-family: sans-serif;
     font-size: 20px;
     position: relative;
-    top: 20px;
     font-weight: 800;
     color: gray;
 
@@ -129,7 +130,7 @@ h4 {
 
 .welcome .exit-modal {
     position: relative;
-    top: -50px;
+    top: -15px;
     font-size: 20px;
 }
 

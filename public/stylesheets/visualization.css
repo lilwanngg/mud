@@ -35,7 +35,6 @@ body {
 
 }
 
-
 li {
     list-style: none;
     padding: 5px 0px;
@@ -49,6 +48,7 @@ li {
     align-items: center;
     position: relative;
     top: 20px;
+    user-select: none;
 }
 
 .mud {
@@ -56,6 +56,7 @@ li {
     margin-bottom: 4px;
     font-size: 50px;
     font-weight: 700;
+    user-select: none;
 }
 
 .rec-artist {
@@ -99,4 +100,8 @@ ul {
 
 .selected {
     background-color: rgb(221, 221, 237);
+}
+
+.titles {
+    user-select: none;
 }
