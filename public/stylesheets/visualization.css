@@ -1,3 +1,7 @@
+.content {
+    width: 100%;
+}
+
 .tooltip {	
     position: absolute;										
     padding: 8px;					
