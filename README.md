@@ -12,8 +12,8 @@ MÜD is an interactive viewing experience for a user and his/her music library. 
 
 
 ## `Development Timeline`
-* working with Spotify API to gather data and determine key attributes (1.5 day)
-* parse through data for a user's recent history to gather all relevant information (1.5 day)
-* chart implementation for the visualization using d3.js (2 day)
-* 
+* working with Spotify API to gather data and determine key attributes (1.5 days)
+* parse through data for a user's recent history to gather all relevant information (1.5 days)
+* chart implementation for the visualization using d3.js (2 days)
+* application of k-means clustering theory integration (2 days)
 
