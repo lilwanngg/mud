@@ -41,7 +41,7 @@
 #links {
     display: flex;
     justify-content: center;
-    margin-left: 25px;
+    margin-left: 5px;
 }
 
 .designed-by {
@@ -50,7 +50,7 @@
     font-weight: 300;
 }
 .fab, .fas{
-    margin: 0px 15px;
+    margin: 0px 10px 40px 10px;
     width: 30px;
     height: 30px;
     font-size: 40px;
