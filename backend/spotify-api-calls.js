@@ -229,34 +229,33 @@ module.exports.spotifyAuth = function (req, res) {
                 req.session.audio_features.long = audio_features_long
                 req.session.info.long = info_long
                 req.session.recommendations.long = recommendations_long
-                // related to finding clusters but not necessary
-                // req.session.clusters = { short: [], medium: [], long: [] }
-                // clusterMaker.k(5)
-                // clusterMaker.iterations(1000)
-                // let lengths = ["short", "medium", "long"]
-                // let results, centroid
-                // let cD1 = [] 
-                // let cD2 = [] 
-                // let cD3 = [] 
-                // let qty = 0
-                // lengths.forEach( length => {
-                //     req.session.audio_features[length].forEach( track => {
-                //         cD1.push([track.valence, track.energy])
-                //         cD2.push([track.valence, track.danceability])
-                //         cD3.push([track.valence, track.tempo])
-                //     });
-                //     [cD1, cD2, cD3].forEach( cD => {
-                //         clusterMaker.data(cD);
-                //         results = clusterMaker.clusters();
-                //         results.forEach( clust => {
-                //             if (clust.points.length > qty) { 
-                //                 centroid = clust.centroid
-                //             }
-                //         });
-                //         req.session.clusters[length].push(centroid)
-                //         qty = 0
-                //     });
-                // });
+                req.session.clusters = { short: [], medium: [], long: [] }
+                clusterMaker.k(8)
+                clusterMaker.iterations(1000)
+                let lengths = ["short", "medium", "long"]
+                let results, centroid
+                let cD1 = [] 
+                let cD2 = [] 
+                let cD3 = [] 
+                let qty = 0
+                lengths.forEach( length => {
+                    req.session.audio_features[length].forEach( track => {
+                        cD1.push([track.valence, track.energy])
+                        cD2.push([track.valence, track.danceability])
+                        cD3.push([track.valence, track.tempo])
+                    });
+                    [cD1, cD2, cD3].forEach( cD => {
+                        clusterMaker.data(cD);
+                        results = clusterMaker.clusters();
+                        results.forEach( clust => {
+                            if (clust.points.length >= qty) { 
+                                centroid = clust.centroid
+                            }
+                        });
+                        req.session.clusters[length].push(centroid)
+                        qty = 0
+                    });
+                });
                 res.redirect('/yourmud')
             })
     })

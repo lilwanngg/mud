@@ -33,7 +33,30 @@
     box-shadow: 0px 0px 3px 1px rgba(213, 207, 207, 0.776);
     user-select: none;
 }
+.right-side {
+    display: flex;
+    flex-direction: column;
+}
 
+#links {
+    display: flex;
+    justify-content: center;
+    margin-left: 25px;
+}
+
+.designed-by {
+    align-self: center;
+    margin-left: 30px;
+    font-weight: 300;
+}
+.fab, .fas{
+    margin: 0px 15px;
+    width: 30px;
+    height: 30px;
+    font-size: 40px;
+    color: rgb(225, 225, 225);
+    cursor: pointer;
+}
 
 .feature-select {
     width: 430px;

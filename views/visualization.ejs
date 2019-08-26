@@ -3,6 +3,7 @@
 
 <head>
   <link href="https://fonts.googleapis.com/css?family=Livvic:100,200,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
   <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
   <title>
     
@@ -87,6 +88,10 @@
           let med_recs = <%- JSON.stringify(recommendations.medium) %>
           let long_recs = <%- JSON.stringify(recommendations.long) %>
           let energy = "energy" , tempo = "tempo", loudness = "loudness", danceability = "danceability"
+          let short_clust = <%- JSON.stringify(clusters.short) %>
+          let medium_clust = <%- JSON.stringify(clusters.medium) %>
+          let long_clust = <%- JSON.stringify(clusters.long) %>
+          let current_cluster = medium_clust
           let current_selection = medium
           let current_feature = energy
           let printable_recs
@@ -96,24 +101,35 @@
           })
         </script>
         <div class="titles">time-period: <div class="question-btn modal1">?</div></div>
-        <button onclick="updateSelection(short, current_feature, 'button1', short_recs)" class="buttons" id="button1">short</button>
-        <button onclick="updateSelection(medium, current_feature, 'button2', med_recs)" class="buttons selected" id="button2">medium</button>
-        <button onclick="updateSelection(long, current_feature, 'button3', long_recs)" class="buttons"  id="button3">long</button>
+        <button onclick="updateSelection(short, current_feature, 'button1', short_recs, short_clust)" class="buttons" id="button1">short</button>
+        <button onclick="updateSelection(medium, current_feature, 'button2', med_recs, medium_clust)" class="buttons selected" id="button2">medium</button>
+        <button onclick="updateSelection(long, current_feature, 'button3', long_recs, long_clust)" class="buttons"  id="button3">long</button>
         <br/>
         <br/>
         <br/>
         <div class="titles">feature: <div class="question-btn modal2">?</div></div>
         <div class="choices"> 
-          <button onclick="updateSelection(current_selection, energy, 'button4')" class="buttons selected" id="button4">energy</button>
-          <button onclick="updateSelection(current_selection, danceability, 'button7')" class="buttons" id="button7">danceability</button>
-          <button onclick="updateSelection(current_selection, tempo, 'button5')" class="buttons" id="button5">tempo</button>
+          <button onclick="updateSelection(current_selection, energy, 'button4', null, current_cluster)" class="buttons selected" id="button4">energy</button>
+          <button onclick="updateSelection(current_selection, danceability, 'button7', null, current_cluster)" class="buttons" id="button7">danceability</button>
+          <button onclick="updateSelection(current_selection, tempo, 'button5', null, current_cluster)" class="buttons" id="button5">tempo</button>
         </div>
       </div>
       <div class="canvas">
         <circle></circle>
+        <ellipse></ellipse>
       </div>
-      <ul id="recommendations-area">
-      </ul>
+      <div class="right-side">
+        <div id="links">
+          <a href="mailto:lillian.wang97@gmail.com"><i class="fas fa-envelope-square"></i></a>
+          <a href="https://www.linkedin.com/in/lillianwang97/"><i class="fab fa-linkedin"></i></a>
+          <a href="https://github.com/lilwanngg"><i class="fab fa-github-square"></i></a>
+          <a href="https://angel.co/lillianwang"><i class="fab fa-angellist"></i></a>
+        </div>
+        <ul id="recommendations-area">
+          
+        </ul>
+        <div class="designed-by">Designed by Lillian Wang</div>
+      </div>
     </div>
 </body>
 
@@ -131,7 +147,7 @@
     })
   }
   
-  function updateSelection(selection, song_feature, button, new_recs) {
+  function updateSelection(selection, song_feature, button, new_recs, cluster) {
     let length, i
     if (button === "button1" || button === "button2" || button === "button3") {
       length = 3
@@ -152,9 +168,10 @@
       document.getElementById("recommendations-area").innerHTML = "recommendations" + printable_recs.join(" ")
     }
 
+    current_cluster = cluster
     current_selection = selection
     current_feature = song_feature
-    update(selection, song_feature)
+    update(selection, song_feature, cluster)
   }
 
   const colors = [ "#FFA69E", "#FAF3DD", "#B8F2E6", "#AED9E0", "#7F899F", "#8FBC8F", "#D8BFD8" ]
@@ -246,17 +263,30 @@
     .style("text-anchor", "middle")
     .text("energy");
 
-  function update(data, feature) {
+  function update(data, feature, clust) {
     let featureTitle
     let domain
+    let cluster_pt
     if (feature === "energy") {
       featureTitle = "energy"
+      cluster_pt = clust[0]
+      if (cluster_pt[2] !== "energy") {
+        cluster_pt.push("energy")
+      }
       domain = [0, 1.0]
     } else if (feature === "danceability") {
       featureTitle = "danceability"
+      cluster_pt = clust[1]
+      if (cluster_pt[2] !== "danceability") {
+        cluster_pt.push("danceability")
+      }
       domain = [0, 1.0]
     } else if (feature === "tempo") {
       featureTitle = "tempo (beats per min)"
+      cluster_pt = clust[2]
+      if (cluster_pt[2] !== "tempo") {
+        cluster_pt.push("tempo")
+      }
       domain = [0, d3.max(data, function(d) {
         return d.tempo
       })]
@@ -271,7 +301,7 @@
 
     let yAxisText = svg.selectAll(".y-axis-text")
     yAxisText.remove()
-    
+
     svg.append("text")
       .attr("class", "y-axis-text")
       .attr("transform", "rotate(-90)")
@@ -280,6 +310,68 @@
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .text(featureTitle)
+
+    let c = svg.selectAll("ellipse")
+      .data(cluster_pt)
+    c
+      .enter()
+      .append("ellipse")
+      .merge(c)
+      .on("mouseover", function (d) {
+        d3.select(this)
+          .style("opacity", 1)
+        div.transition()
+          .duration(200)
+          .style("opacity", .9)
+          .style("font-size", "14px")
+          
+        let feat_rating
+        let val_rating
+        if (cluster_pt[2] !== "tempo") {
+          if (cluster_pt[1] < .4) {
+            feat_rating = "low"
+          } else if (cluster_pt[1] > .6) {
+            feat_rating = "high"
+          } else {
+            feat_rating = "medium"
+          }
+        } else {
+          if (cluster_pt[1] < 78) {
+            feat_rating = "low"
+          } else if (cluster_pt[1] > 120) {
+            feat_rating = "high"
+          } else {
+            feat_rating = "medium"
+          }
+        }
+
+        if (cluster_pt[0] < .4) {
+          val_rating = "low"
+        } else if (cluster_pt[0] > .6) {
+          val_rating = "high"
+        } else {
+          val_rating = "medium"
+        }
+        div.html("The largest cluster of your listening data lies in " + " <br/> " + "the " + feat_rating + " " + cluster_pt[2] + " and " + val_rating + " valence region.")
+          .style("left", (d3.event.pageX + 20) + "px")
+          .style("top", (d3.event.pageY - 28) + "px");
+      })
+      .on("mouseout", function (d) {
+        d3.select(this)
+          .style("opacity", .25)
+        div.transition()
+          .duration(500)
+          .style("opacity", 0);
+      })
+      .transition()
+      .duration(1000)
+      .attr('cx', (cluster_pt[0] * (width - 70) + 60))
+      .attr('cy', new_y(cluster_pt[1]))
+      .attr('rx', 90)
+      .attr('ry', 90)
+      .style("opacity", 0.25)
+      .attr('stroke', "lightgray")
+      .attr('fill', "lightgray")
       
     let u = svg.selectAll("circle")
       .data(data)
@@ -297,13 +389,13 @@
           .style("left", (d3.event.pageX + 20) + "px")
           .style("top", (d3.event.pageY - 28) + "px");
         })
-        .on("mouseout", function (d) {
-          d3.select(this)
-            .style("opacity", .6)
-          div.transition()
-            .duration(500)
-            .style("opacity", 0);
-        })
+      .on("mouseout", function (d) {
+        d3.select(this)
+          .style("opacity", .6)
+        div.transition()
+          .duration(500)
+          .style("opacity", 0);
+      })
       .transition()
       .duration(1000)
       .attr('cx', function(d) {
@@ -321,10 +413,10 @@
       })
       .attr('fill', function(d) {
         return colors[d.idx%7]
-      })   
+      })
   }
 
-  update(current_selection, current_feature)
+  update(current_selection, current_feature, current_cluster)
 
   const btns = document.getElementsByClassName("question-btn")
 
