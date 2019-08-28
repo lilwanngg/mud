@@ -1,5 +1,7 @@
 ### MÜD (pronounced mood)
 
+See the site here! http://music-mud.herokuapp.com/
+
 MÜD is an interactive viewing experience for a user and his/her music library. It allows users to link their Spotify's recent listening history to see a visualization that maps each song onto a corresponding point on the graph, based on song characteristics gathered through the Spotify API. Users will then be able to plot different characterstics of the songs onto the y axis, such as valence, danceability, energy, & tempo. In addition to that, recommendations will be displayed on the side to help people discover new music!
 
 ![gif](https://github.com/lilwanngg/mud/blob/master/public/ezgif.com-gif-maker%20(1).gif)
