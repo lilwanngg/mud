@@ -32,8 +32,6 @@ function generateRandomString(length) {
     return text;
 };
 
-//Spotify callback + sessions
-
 const spotifyApi = new SpotifyWebApi({
     clientId: client_id,
     clientSecret: client_secret,
