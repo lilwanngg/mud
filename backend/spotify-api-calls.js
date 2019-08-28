@@ -1,6 +1,5 @@
 var SpotifyWebApi = require('spotify-web-api-node');
 var querystring = require('querystring');
-var fetch = require('node-fetch');
 var clusterMaker = require('clusters')
 
 var client_id = '';
