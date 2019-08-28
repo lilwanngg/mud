@@ -100,18 +100,10 @@
             return ("<li class='rec'>" + "<div class='rec-title'>" + rec[1] + "</div>" + "<div class='rec-artist'>" + rec[0] + "</div> " + "</li >")
           })
         </script>
-        <div id="links">
-          <a href="mailto:lillian.wang97@gmail.com"><i class="fas fa-envelope-square"></i></a>
-          <a href="https://www.linkedin.com/in/lillianwang97/"><i class="fab fa-linkedin"></i></a>
-          <a href="https://github.com/lilwanngg"><i class="fab fa-github-square"></i></a>
-          <a href="https://angel.co/lillianwang"><i class="fab fa-angellist"></i></a>
-        </div>
         <div class="titles">time-period: <div class="question-btn modal1">?</div></div>
         <button onclick="updateSelection(short, current_feature, 'button1', short_recs, short_clust)" class="buttons" id="button1">short</button>
         <button onclick="updateSelection(medium, current_feature, 'button2', med_recs, medium_clust)" class="buttons selected" id="button2">medium</button>
         <button onclick="updateSelection(long, current_feature, 'button3', long_recs, long_clust)" class="buttons"  id="button3">long</button>
-        <br/>
-        <br/>
         <br/>
         <div class="titles">feature: <div class="question-btn modal2">?</div></div>
         <div class="choices"> 
@@ -119,6 +111,16 @@
           <button onclick="updateSelection(current_selection, danceability, 'button7', null, current_cluster)" class="buttons" id="button7">danceability</button>
           <button onclick="updateSelection(current_selection, tempo, 'button5', null, current_cluster)" class="buttons" id="button5">tempo</button>
         </div>
+        <br/>
+        <br/>
+        <div id="links">
+          <a href="mailto:lillian.wang97@gmail.com" target="_blank"><i class="fas fa-envelope-square"></i></a>
+          <a href="https://www.linkedin.com/in/lillianwang97/" target="_blank"><i class="fab fa-linkedin"></i></a>
+          <a href="https://github.com/lilwanngg" target="_blank"><i class="fab fa-github-square"></i></a>
+          <a href="https://angel.co/lillianwang" target="_blank"><i class="fab fa-angellist"></i></a>
+          <a href="https://lilwanngg.github.io/lilwanngg/" target="_blank"><i class="fas fa-folder-open"></i></a>
+        </div>
+        <div class="designed-by">Built by Lillian Wang</div>
       </div>
       <div class="canvas">
         <circle></circle>
@@ -128,7 +130,6 @@
         <ul id="recommendations-area">
           
         </ul>
-        <div class="designed-by">Designed by Lillian Wang</div>
       </div>
     </div>
 </body>
