@@ -6,12 +6,12 @@
     "start": "node ./bin/server"
   },
   "dependencies": {
-    "body-parser": "~1.18.2",
+    "body-parser": "~1.20.1",
     "clusters": "0.0.4",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "express-session": "^1.15.6",
     "morgan": "~1.9.0",
     "node-fetch": "^2.6.0",
